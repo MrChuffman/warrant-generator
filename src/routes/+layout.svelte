@@ -17,8 +17,6 @@
 	});
 
 	let { children } = $props();
-
-	export const prerender = true;
 </script>
 
 <Navbar {toggleNav} {closeNav} {navStatus} breakPoint="md">
