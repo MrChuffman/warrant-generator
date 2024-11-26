@@ -3,6 +3,8 @@
 	import { createStorage } from '$lib/utils/localStorage.svelte';
 	import { Heading, Input, Label, Textarea, Button, Select, Helper } from 'svelte-5-ui-lib';
 
+	import { handleTextareaInput } from '$lib/utils/helpers.svelte';
+
 	interface HeroSheet {
 		title: string;
 		content: string;
@@ -17,7 +19,7 @@
 	const warrantTypes: WarrantType[] = [
 		{ group: 'General', value: 'general/property', label: 'Property' },
 		{ group: 'Seizure', value: 'seizure/narcotics', label: 'Narcotics' },
-		{ group: 'Seizure', value: 'seizure/altered-vin', label: 'Altered VIN' },
+		{ group: 'Seizure', value: 'seizure/altered-vins', label: 'Altered VINs' },
 		{ group: 'Digital Evidence', value: 'digital-evidence/devices', label: 'Devices' },
 		{
 			group: 'Digital Evidence',
@@ -170,19 +172,6 @@
 		const { errors, ...formData } = form.value;
 
 		goto(`/warrants/${formData.warrantType}`);
-	};
-
-	const handleTextareaInput = (event: Event & { target: HTMLTextAreaElement; key?: string }) => {
-		const textarea = event.target;
-		adjustTextareaHeight(textarea);
-
-		if (event.key === 'Tab') {
-			event.preventDefault();
-			const start = textarea.selectionStart;
-			const end = textarea.selectionEnd;
-			textarea.value = textarea.value.substring(0, start) + '\t' + textarea.value.substring(end);
-			textarea.selectionStart = textarea.selectionEnd = start + 1;
-		}
 	};
 
 	const updateHerosheet = (content: string) => {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { createStorage } from '$lib/utils/localStorage.svelte';
 	import {
 		Heading,
@@ -9,6 +10,8 @@
 		Accordion,
 		AccordionItem
 	} from 'svelte-5-ui-lib';
+
+	import { handleTextareaInput } from '$lib/utils/helpers.svelte';
 
 	interface HeroSheet {
 		title: string;
@@ -34,21 +37,12 @@
 
 	let textareas = $state<HTMLTextAreaElement[]>([]);
 
-	const adjustTextareaHeight = (textarea: HTMLTextAreaElement) => {
-		if (textarea) {
-			textarea.style.height = 'auto';
-			textarea.style.height = `${textarea.scrollHeight}px`;
-		}
-	};
-
 	$effect(() => {
 		textareas.forEach((textarea) => adjustTextareaHeight(textarea));
 	});
 
 	const handleForm = () => {
-		// Storage is automatically updated through the reactive binding
-		// You might want to do other things here like form validation
-		console.log('Form saved:', form.value);
+		goto('/');
 	};
 
 	const handleAddHerosheet = () => {
@@ -90,20 +84,6 @@
 				i === index ? { ...sheet, content } : sheet
 			)
 		};
-	};
-
-	const handleTextareaInput = (event: Event & { target: HTMLTextAreaElement; key?: string }) => {
-		const textarea = event.target;
-		adjustTextareaHeight(textarea);
-
-		if (event.key === 'Tab') {
-			event.preventDefault();
-			const start = textarea.selectionStart;
-			const end = textarea.selectionEnd;
-			textarea.value =
-				textarea.value.substring(0, start) + '        ' + textarea.value.substring(end);
-			textarea.selectionStart = textarea.selectionEnd = start + 8;
-		}
 	};
 </script>
 

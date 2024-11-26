@@ -1,5 +1,10 @@
 <script lang="ts">
-	import type { WarrantSetup, NarcoticsSeizureWarrant, SavedWarrants } from '$lib/types';
+	import type {
+		WarrantSetup,
+		HeroSheet,
+		AlteredVINsSeizureWarrant,
+		SavedWarrants
+	} from '$lib/types';
 
 	import { Heading, Input, Label, Textarea, Button, Select, Helper } from 'svelte-5-ui-lib';
 	import { PlusOutline, MinusOutline, TextSizeOutline } from 'flowbite-svelte-icons';
@@ -11,9 +16,9 @@
 
 	const storage = createStorage();
 	const savedWarrants = storage.reactive<SavedWarrants[]>('savedWarrants', []);
-	const savedWarrant = storage.get<NarcoticsSeizureWarrant>('warrant');
+	const savedWarrant = storage.get<AlteredVINsSeizureWarrant>('warrant');
 
-	const form = storage.reactive<NarcoticsSeizureWarrant>('warrant', {
+	const form = storage.reactive<AlteredVINsSeizureWarrant>('warrant', {
 		seizableItems: savedWarrant?.seizableItems ?? '',
 		factsAndCircumstances: savedWarrant?.factsAndCircumstances ?? '',
 		errors: {}
@@ -22,7 +27,7 @@
 	let textareas = $state<HTMLTextAreaElement[]>([]);
 
 	const validateForm = (): boolean => {
-		const errors: NarcoticsSeizureWarrant['errors'] = {};
+		const errors: AlteredVINsSeizureWarrant['errors'] = {};
 
 		if (!form.value.seizableItems?.trim()) {
 			errors.seizableItems = 'Seizable items are required';
@@ -41,18 +46,18 @@
 			return;
 		}
 
-		const { errors, ...narcoticsData } = form.value;
-		storage.set('warrant', narcoticsData);
+		const { errors, ...alteredVinsData } = form.value;
+		storage.set('warrant', alteredVinsData);
 
 		const warrantData = storage.get<WarrantSetup>('warrant');
 
 		const data = {
 			...warrantData,
-			...narcoticsData,
+			...alteredVinsData,
 			judicialCountyUppercase: warrantData.judicialCounty.toUpperCase(),
 			judicialStateUppercase: warrantData.judicialState.toUpperCase(),
 			affiantDepartmentUppercase: warrantData.affiantDepartment.toUpperCase(),
-			fileName: `${warrantData.incidentNumber}-seizure-narcotics-warrant.docx`
+			fileName: `${warrantData.incidentNumber}-seizure-altered-vins-warrant.docx`
 		};
 
 		// Save to forms array
@@ -66,7 +71,7 @@
 
 		savedWarrants.value = [...savedWarrants.value, newForm];
 
-		await generateWordDocument('/templates/seizure/narcotics.docx', data, [
+		await generateWordDocument('/templates/seizure/altered-vins.docx', data, [
 			'affiantHerosheet',
 			'factsAndCircumstances'
 		]);
@@ -119,23 +124,23 @@
 	};
 </script>
 
-<div class="flex justify-between">
+<div class="mb-2.5 flex justify-between border-b-2">
 	<Heading tag="h3" class="text-primary-700 dark:text-primary-500"
-		>Narcotics Seizure Warrant</Heading
+		>Altered VINs Seizure Warrant</Heading
 	>
 </div>
 
 <div class="grid gap-2.5">
 	<Label class="grid gap-2.5">
-		Seizable Items
+		Seizable Vehicles
 		<Textarea
 			bind:this={textareas[0]}
 			value={form.value.seizableItems}
 			oninput={updateSeizableItems}
 			onkeydown={handleTextareaInput}
 			color={form.value.errors?.seizableItems ? 'red' : 'gray'}
+			placeholder="Seizable Vehicles"
 			class={`${fontSize}`}
-			placeholder="Seizable Items"
 		/>
 	</Label>
 	{#if form.value.errors?.seizableItems}

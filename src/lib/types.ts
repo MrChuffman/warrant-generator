@@ -12,15 +12,6 @@ export interface HeroSheet {
 	content: string;
 }
 
-export interface NarcoticsWarrant {
-	seizableItems: string;
-	factsAndCircumstances: string;
-	errors?: {
-		seizableItems?: string;
-		factsAndCircumstances?: string;
-	};
-}
-
 export interface WarrantSetup {
 	warrantType: string;
 	incidentNumber: string;
@@ -48,5 +39,23 @@ export interface WarrantSetup {
 		affiantLastName?: string;
 		affiantDepartment?: string;
 		affiantHerosheet?: string;
+	};
+}
+
+export interface NarcoticsSeizureWarrant {
+	seizableItems: string;
+	factsAndCircumstances: string;
+	errors?: {
+		seizableItems?: string;
+		factsAndCircumstances?: string;
+	};
+}
+
+export interface AlteredVINsSeizureWarrant {
+	seizableItems: string;
+	factsAndCircumstances: string;
+	errors?: {
+		seizableItems?: string;
+		factsAndCircumstances?: string;
 	};
 }

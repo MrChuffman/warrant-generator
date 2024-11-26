@@ -23,6 +23,9 @@ importers:
       docxtemplater:
         specifier: ^3.54.0
         version: 3.54.0
+      flowbite-svelte-icons:
+        specifier: ^2.0.2
+        version: 2.0.2(svelte@5.2.7)(tailwind-merge@2.5.5)(tailwindcss@3.4.15)
       fs:
         specifier: 0.0.1-security
         version: 0.0.1-security
@@ -954,6 +957,14 @@ packages:
 
   flatted@3.3.2:
     resolution: {integrity: sha512-AiwGJM8YcNOaobumgtng+6NHuOqC3A7MixFeDafM3X9cIUM+xUXoS5Vfgf+OihAYe20fxqNM9yPBXJzRtZ/4eA==}
+
+  flowbite-svelte-icons@2.0.2:
+    resolution: {integrity: sha512-Vkmduy2867Rk8R7TziPirsWkixJnToFBEXRaN4ouJabOx62NQjiBbHFe+HTaMOQmdp4FNMI2Nhtk2I2CQ8r3RQ==}
+    engines: {node: '>=18.0.0', npm: '>=7.0.0'}
+    peerDependencies:
+      svelte: ^5.0.0
+      tailwind-merge: ^2.3.0
+      tailwindcss: ^3.4.3
 
   foreground-child@3.3.0:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
@@ -2664,6 +2675,12 @@ snapshots:
       keyv: 4.5.4
 
   flatted@3.3.2: {}
+
+  flowbite-svelte-icons@2.0.2(svelte@5.2.7)(tailwind-merge@2.5.5)(tailwindcss@3.4.15):
+    dependencies:
+      svelte: 5.2.7
+      tailwind-merge: 2.5.5
+      tailwindcss: 3.4.15
 
   foreground-child@3.3.0:
     dependencies:
