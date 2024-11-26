@@ -16,7 +16,6 @@
 	import { FileCopyOutline, TrashBinOutline, FolderOpenOutline } from 'flowbite-svelte-icons';
 
 	import { createStorage } from '$lib/utils/localStorage.svelte';
-	import { ITERM_SESSION_ID } from '$env/static/private';
 
 	const storage = createStorage();
 	let warrants = $state(storage.get('savedWarrants') || []);
