@@ -1,13 +1,17 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { WarrantSetup, NarcoticsSeizureWarrant, SavedWarrants } from '$lib/types';
 
-	import { Heading, Input, Label, Textarea, Button, Select, Helper } from 'svelte-5-ui-lib';
+	import { Heading, Label, Textarea, Button, Helper } from 'svelte-5-ui-lib';
 	import { PlusOutline, MinusOutline, TextSizeOutline } from 'flowbite-svelte-icons';
 
 	import { createStorage } from '$lib/utils/localStorage.svelte';
 
 	import { handleTextareaInput } from '$lib/utils/helpers.svelte';
 	import { generateWordDocument } from '$lib/utils/docx.svelte';
+	import { goto } from '$app/navigation';
+
+	let warrantId = $page.url.searchParams.get('id');
 
 	const storage = createStorage();
 	const savedWarrants = storage.reactive<SavedWarrants[]>('savedWarrants', []);
@@ -41,34 +45,59 @@
 			return;
 		}
 
-		const { errors, ...narcoticsData } = form.value;
-		storage.set('warrant', narcoticsData);
+		const { errors, ...alteredVinsData } = form.value;
+		storage.set('warrant', alteredVinsData);
 
 		const warrantData = storage.get<WarrantSetup>('warrant');
 
 		const data = {
 			...warrantData,
-			...narcoticsData,
+			...alteredVinsData,
 			judicialCountyUppercase: warrantData.judicialCounty.toUpperCase(),
 			judicialStateUppercase: warrantData.judicialState.toUpperCase(),
 			affiantDepartmentUppercase: warrantData.affiantDepartment.toUpperCase(),
 			fileName: `${warrantData.incidentNumber}-seizure-narcotics-warrant.docx`
 		};
 
-		// Save to forms array
-		const newForm: SavedForm = {
-			id: crypto.randomUUID(),
-			timestamp: Date.now(),
-			incidentNumber: warrantData.incidentNumber,
-			warrantType: warrantData.warrantType,
-			data
-		};
+		if (warrantId) {
+			console.clear();
+			console.log('Called');
+			// Update existing warrant
+			savedWarrants.value = savedWarrants.value.map((warrant) => {
+				if (warrant.id === warrantId) {
+					return {
+						...warrant,
+						timestamp: Date.now(),
+						incidentNumber: warrantData.incidentNumber,
+						warrantType: warrantData.warrantType,
+						warrantTypeFriendly: 'Seizure - Narcotics',
+						subject: data.seizableItems.split('\n'),
+						data
+					};
+				}
+				return warrant;
+			});
+		} else {
+			// Create new warrant
+			const newForm: SavedWarrants = {
+				id: crypto.randomUUID(),
+				timestamp: Date.now(),
+				incidentNumber: warrantData.incidentNumber,
+				warrantType: warrantData.warrantType,
+				warrantTypeFriendly: 'Seizure - Narcotics',
+				subject: data.seizableItems.split('\n'),
+				data
+			};
 
-		savedWarrants.value = [...savedWarrants.value, newForm];
+			savedWarrants.value = [...savedWarrants.value, newForm];
+
+			warrantId = newForm.id;
+		}
 
 		await generateWordDocument('/templates/seizure/narcotics.docx', data, [
 			'affiantHerosheet',
-			'factsAndCircumstances'
+			'factsAndCircumstances',
+			'seizableItems'
 		]);
 	};
 

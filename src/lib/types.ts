@@ -3,8 +3,11 @@ export interface SavedWarrants {
 	timestamp: number;
 	incidentNumber: string;
 	warrantType: string;
-	warrant: NarcoticsWarrant;
+	warrant: NarcoticsSeizureWarrant | AlteredVINsSeizureWarrant;
+	warrantTypeFriendly: string;
+	subject: string[];
 	setup: WarrantSetup;
+	data?: any;
 }
 
 export interface HeroSheet {
@@ -52,10 +55,10 @@ export interface NarcoticsSeizureWarrant {
 }
 
 export interface AlteredVINsSeizureWarrant {
-	seizableItems: string;
+	seizableVehicles: string;
 	factsAndCircumstances: string;
 	errors?: {
-		seizableItems?: string;
+		seizableVehicles?: string;
 		factsAndCircumstances?: string;
 	};
 }

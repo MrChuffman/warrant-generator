@@ -1,25 +1,22 @@
 <script lang="ts">
-	import type {
-		WarrantSetup,
-		HeroSheet,
-		AlteredVINsSeizureWarrant,
-		SavedWarrants
-	} from '$lib/types';
+	import { page } from '$app/stores';
 
-	import { Heading, Input, Label, Textarea, Button, Select, Helper } from 'svelte-5-ui-lib';
+	import { Heading, Label, Textarea, Button, Helper } from 'svelte-5-ui-lib';
 	import { PlusOutline, MinusOutline, TextSizeOutline } from 'flowbite-svelte-icons';
 
+	import type { WarrantSetup, AlteredVINsSeizureWarrant, SavedWarrants } from '$lib/types';
 	import { createStorage } from '$lib/utils/localStorage.svelte';
-
 	import { handleTextareaInput } from '$lib/utils/helpers.svelte';
 	import { generateWordDocument } from '$lib/utils/docx.svelte';
+
+	let warrantId = $page.url.searchParams.get('id');
 
 	const storage = createStorage();
 	const savedWarrants = storage.reactive<SavedWarrants[]>('savedWarrants', []);
 	const savedWarrant = storage.get<AlteredVINsSeizureWarrant>('warrant');
 
 	const form = storage.reactive<AlteredVINsSeizureWarrant>('warrant', {
-		seizableItems: savedWarrant?.seizableItems ?? '',
+		seizableVehicles: savedWarrant?.seizableVehicles ?? '',
 		factsAndCircumstances: savedWarrant?.factsAndCircumstances ?? '',
 		errors: {}
 	});
@@ -29,12 +26,12 @@
 	const validateForm = (): boolean => {
 		const errors: AlteredVINsSeizureWarrant['errors'] = {};
 
-		if (!form.value.seizableItems?.trim()) {
-			errors.seizableItems = 'Seizable items are required';
+		if (!form.value.seizableVehicles?.trim()) {
+			errors.seizableVehicles = 'Seizable vehicles can not be blank';
 		}
 
 		if (!form.value.factsAndCircumstances?.trim()) {
-			errors.factsAndCircumstances = 'Facts and circumstances are required';
+			errors.factsAndCircumstances = 'Facts and circumstances can not be blank';
 		}
 
 		form.value = { ...form.value, errors };
@@ -60,28 +57,51 @@
 			fileName: `${warrantData.incidentNumber}-seizure-altered-vins-warrant.docx`
 		};
 
-		// Save to forms array
-		const newForm: SavedForm = {
-			id: crypto.randomUUID(),
-			timestamp: Date.now(),
-			incidentNumber: warrantData.incidentNumber,
-			warrantType: warrantData.warrantType,
-			data
-		};
+		if (warrantId) {
+			// Update existing warrant
+			savedWarrants.value = savedWarrants.value.map((warrant) => {
+				if (warrant.id === warrantId) {
+					return {
+						...warrant,
+						timestamp: Date.now(),
+						incidentNumber: warrantData.incidentNumber,
+						warrantType: warrantData.warrantType,
+						warrantTypeFriendly: 'Seizure - Altered VINs',
+						subject: data.seizableVehicles.split('\n'),
+						data
+					};
+				}
+				return warrant;
+			});
+		} else {
+			// Create new warrant
+			const newForm: SavedWarrants = {
+				id: crypto.randomUUID(),
+				timestamp: Date.now(),
+				incidentNumber: warrantData.incidentNumber,
+				warrantType: warrantData.warrantType,
+				warrantTypeFriendly: 'Seizure - Altered VINs',
+				subject: data.seizableVehicles.split('\n'),
+				data
+			};
 
-		savedWarrants.value = [...savedWarrants.value, newForm];
+			savedWarrants.value = [...savedWarrants.value, newForm];
+
+			warrantId = newForm.id;
+		}
 
 		await generateWordDocument('/templates/seizure/altered-vins.docx', data, [
 			'affiantHerosheet',
-			'factsAndCircumstances'
+			'factsAndCircumstances',
+			'seizableVehicles'
 		]);
 	};
 
-	const updateSeizableItems = (e: Event) => {
+	const updateseizableVehicles = (e: Event) => {
 		const textarea = e.target as HTMLTextAreaElement;
 		form.value = {
 			...form.value,
-			seizableItems: textarea.value
+			seizableVehicles: textarea.value
 		};
 	};
 
@@ -135,16 +155,15 @@
 		Seizable Vehicles
 		<Textarea
 			bind:this={textareas[0]}
-			value={form.value.seizableItems}
-			oninput={updateSeizableItems}
-			onkeydown={handleTextareaInput}
-			color={form.value.errors?.seizableItems ? 'red' : 'gray'}
+			value={form.value.seizableVehicles}
+			oninput={updateseizableVehicles}
+			color={form.value.errors?.seizableVehicles ? 'red' : 'gray'}
 			placeholder="Seizable Vehicles"
 			class={`${fontSize}`}
 		/>
 	</Label>
-	{#if form.value.errors?.seizableItems}
-		<Helper color="red">{form.value.errors.seizableItems}</Helper>
+	{#if form.value.errors?.seizableVehicles}
+		<Helper color="red">{form.value.errors.seizableVehicles}</Helper>
 	{:else}
 		<Helper color="default">&nbsp;</Helper>
 	{/if}
