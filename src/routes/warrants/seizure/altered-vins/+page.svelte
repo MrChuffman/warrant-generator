@@ -66,7 +66,7 @@
 						timestamp: Date.now(),
 						incidentNumber: warrantData.incidentNumber,
 						warrantType: warrantData.warrantType,
-						warrantTypeFriendly: 'Seizure - Altered VINs',
+						warrantTypeFriendly: 'Seizure (Altered VINs)',
 						subject: data.seizableVehicles.split('\n'),
 						data
 					};

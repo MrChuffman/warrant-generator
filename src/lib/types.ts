@@ -73,3 +73,14 @@ export interface VehicleInfotainmentSystemWarrant {
 		itemsToSeize?: string;
 	};
 }
+
+export interface DevicesWarrant {
+	devicesDescriptions: string;
+	factsAndCircumstances: string;
+	itemsToSeize: string;
+	errors?: {
+		devicesDescriptions?: string;
+		factsAndCircumstances?: string;
+		itemsToSeize?: string;
+	};
+}

@@ -9,3 +9,10 @@ export const vehicleInfotainmentSystemItemsToSeize = [
 	'Live and deleted data stored on removable media such as Subscriber Identity Modules (SIM cards), flash memory storage devices such as Secure Digital (SD) and Micro SD media cards and any associated wireless devices (Bluetooth, Wi-Fi, or other technology) pertaining to Subject Offense(s)',
 	'Live and deleted historical event data to include, but not limited to, when the headlights were on or off, when doors were opened or closed, when gears were changed, when brakes were applied, and when connections and disconnections were made to other devices, such as Bluetooth, media cards and Wi-Fi pertaining to Subject Offense(s)'
 ];
+
+export const devicesItemsToSeize = [
+	`All forms of electronic communications reasonably believed to be relevant to the investigation, including: text messages (SMS/MMS), instant messages and chat logs, social media messages and communications, email communications, voice messages and audio recordings, video messages, and recordings.`,
+	`Digital media files reasonably believed to be relevant to the investigation, including: photographs, videos, screenshots, images, and graphics.`,
+	`Device data reasonably believed to be relevant to the investigation, including: call logs, contact information, location data, application data, browser history, and cached data.`,
+	`Any and all digital information evidencing potential criminal activity, including: financial records, notes or ledgers, communications about transactions, digital currency information, and deleted records recoverable through forensic methods.`
+];
