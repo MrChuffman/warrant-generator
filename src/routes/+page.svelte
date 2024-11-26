@@ -89,12 +89,13 @@
 				<TableBodyRow class="text-center">
 					<TableBodyCell>{item.incidentNumber}</TableBodyCell>
 					<TableBodyCell>{item.warrantTypeFriendly}</TableBodyCell>
-					{#if item?.subject.length > 2}
-						<TableBodyCell>{`${item?.subject} & ${item?.subject.length - 1} more...`}</TableBodyCell
+					{#if item?.subject?.length > 2}
+						<TableBodyCell
+							>{`${item?.subject} & ${item?.subject?.length - 1} more...`}</TableBodyCell
 						>
-					{:else if item?.subject.length === 2}
+					{:else if item?.subject?.length === 2}
 						<TableBodyCell>{item?.subject[0]}<br />{item?.subject[1]}</TableBodyCell>
-					{:else if item?.subject.length === 1}
+					{:else if item?.subject?.length === 1}
 						<TableBodyCell>{`${item?.subject[0]}`}</TableBodyCell>
 					{:else}
 						<TableBodyCell></TableBodyCell>
