@@ -29,11 +29,11 @@
 		const errors: NarcoticsSeizureWarrant['errors'] = {};
 
 		if (!form.value.seizableItems?.trim()) {
-			errors.seizableItems = 'Seizable items are required';
+			errors.seizableItems = 'Seizable items can not be blank';
 		}
 
 		if (!form.value.factsAndCircumstances?.trim()) {
-			errors.factsAndCircumstances = 'Facts and circumstances are required';
+			errors.factsAndCircumstances = 'Facts and circumstances can not be blank';
 		}
 
 		form.value = { ...form.value, errors };
@@ -148,10 +148,10 @@
 	};
 </script>
 
-<div class="flex justify-between">
-	<Heading tag="h3" class="text-primary-700 dark:text-primary-500"
-		>Narcotics Seizure Warrant</Heading
-	>
+<div class="border-b-primary-700 dark:border-b-primary-500 mb-2.5 flex justify-between border-b-2">
+	<Heading tag="h3" class="text-primary-700 dark:text-primary-500">
+		Narcotics Seizure Warrant
+	</Heading>
 </div>
 
 <div class="grid gap-2.5">
@@ -161,7 +161,6 @@
 			bind:this={textareas[0]}
 			value={form.value.seizableItems}
 			oninput={updateSeizableItems}
-			onkeydown={handleTextareaInput}
 			color={form.value.errors?.seizableItems ? 'red' : 'gray'}
 			class={`${fontSize}`}
 			placeholder="Seizable Items"
@@ -194,6 +193,7 @@
 			oninput={updateFactsAndCircumstances}
 			class={`h-[70vh] ${fontSize}`}
 			color={form.value.errors?.factsAndCircumstances ? 'red' : 'gray'}
+			placeholder="Facts and Circumstances"
 		/>
 	</Label>
 	{#if form.value.errors?.factsAndCircumstances}

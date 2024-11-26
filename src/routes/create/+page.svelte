@@ -190,9 +190,9 @@
 	};
 </script>
 
-<div class="flex justify-between">
-	<Heading tag="h2" class="text-primary-700 dark:text-primary-500">Warrant Setup</Heading>
-	<Button color="red" onclick={handleFormReset}>Reset Form</Button>
+<div class="border-b-primary-700 dark:border-b-primary-500 mb-2.5 flex justify-between border-b-2">
+	<Heading tag="h3" class="text-primary-700 dark:text-primary-500">Warrant Setup</Heading>
+	<Button color="red" onclick={handleFormReset} size="sm" class="mb-1">Reset Form</Button>
 </div>
 
 <div class="grid grid-cols-3 gap-4 pt-2.5">

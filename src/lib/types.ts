@@ -62,3 +62,14 @@ export interface AlteredVINsSeizureWarrant {
 		factsAndCircumstances?: string;
 	};
 }
+
+export interface VehicleInfotainmentSystemWarrant {
+	vehiclesDescription: string;
+	factsAndCircumstances: string;
+	itemsToSeize: string;
+	errors?: {
+		vehiclesDescription?: string;
+		factsAndCircumstances?: string;
+		itemsToSeize?: string;
+	};
+}

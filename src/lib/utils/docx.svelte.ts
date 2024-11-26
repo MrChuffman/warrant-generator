@@ -22,7 +22,6 @@ export const generateWordDocument = async (template, data, textareaFields) => {
 					text: line.trim(),
 					style: 'CustomParagraphStyle' // Apply a custom style
 				}));
-
 				// Replace the original field with formatted paragraphs
 				data[field] = paragraphs;
 			}

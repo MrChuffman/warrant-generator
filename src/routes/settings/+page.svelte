@@ -87,7 +87,9 @@
 	};
 </script>
 
-<Heading tag="h2" class="text-primary-700 dark:text-primary-500">Your Setup</Heading>
+<div class="border-b-primary-700 dark:border-b-primary-500 mb-2.5 flex justify-between border-b-2">
+	<Heading tag="h3" class="text-primary-700 dark:text-primary-500">Your Setup</Heading>
+</div>
 
 <div class="grid grid-cols-3 gap-4 pt-2.5">
 	<Label class="grid gap-2.5">

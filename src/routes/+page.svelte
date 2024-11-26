@@ -21,7 +21,7 @@
 	let warrants = $state(storage.get('savedWarrants') || []);
 	let searchTerm = $state('');
 
-	const headItems = ['Incident Number', 'Type', 'Warrant Subject', 'Actions'];
+	const headItems = ['Incident Number', 'Warrant Type', 'Warrant Subject', 'Actions'];
 
 	let filteredItems = $derived(
 		warrants.filter((item) => item.incidentNumber.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -82,7 +82,7 @@
 	<TableBody>
 		{#if warrants.length === 0}
 			<TableBodyRow class="text-center">
-				<TableBodyCell class="w-full">You have no warrants</TableBodyCell>
+				<TableBodyCell colspan={4}><Button href="/create">Create a Warrant</Button></TableBodyCell>
 			</TableBodyRow>
 		{:else}
 			{#each filteredItems as item, index}
