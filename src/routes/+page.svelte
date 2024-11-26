@@ -16,6 +16,7 @@
 	import { FileCopyOutline, TrashBinOutline, FolderOpenOutline } from 'flowbite-svelte-icons';
 
 	import { createStorage } from '$lib/utils/localStorage.svelte';
+	import { ITERM_SESSION_ID } from '$env/static/private';
 
 	const storage = createStorage();
 	let warrants = $state(storage.get('savedWarrants') || []);
@@ -89,12 +90,15 @@
 				<TableBodyRow class="text-center">
 					<TableBodyCell>{item.incidentNumber}</TableBodyCell>
 					<TableBodyCell>{item.warrantTypeFriendly}</TableBodyCell>
-					{#if item.subject.length > 2}
-						<TableBodyCell>{`${item.subject} & ${item.subject.length - 1} more...`}</TableBodyCell>
-					{:else if item.subject.length === 2}
-						<TableBodyCell>{item.subject[0]}<br />{item.subject[1]}</TableBodyCell>
+					{#if item?.subject.length > 2}
+						<TableBodyCell>{`${item?.subject} & ${item?.subject.length - 1} more...`}</TableBodyCell
+						>
+					{:else if item?.subject.length === 2}
+						<TableBodyCell>{item?.subject[0]}<br />{item?.subject[1]}</TableBodyCell>
+					{:else if item?.subject.length === 1}
+						<TableBodyCell>{`${item?.subject[0]}`}</TableBodyCell>
 					{:else}
-						<TableBodyCell>{`${item.subject[0]}`}</TableBodyCell>
+						<TableBodyCell></TableBodyCell>
 					{/if}
 					<TableBodyCell class="w-[300px]">
 						<div class="flex justify-around">
